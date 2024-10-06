@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CommandLine;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 
 namespace _2fa
@@ -68,5 +69,26 @@ namespace _2fa
 
 			await rootCommand.InvokeAsync(args);
 		}
+	}
+
+	internal class Config
+	{
+		private string PasswordHash;
+		private Entry[] Entries;
+	}
+
+	internal class Entry
+	{
+		private string Name;
+		private string SecretEncrypted;
+		private SecureString Secret;
+		private EntryType Type;
+		private int Size;
+	}
+
+	enum EntryType
+	{
+		Totp,
+		Hotp
 	}
 }
