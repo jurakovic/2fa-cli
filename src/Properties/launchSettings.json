@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "2fa": {
+      "commandName": "Project",
+      "commandLineArgs": "add gh nzxxiidbebvwk6jb"
+    }
+  }
+}
