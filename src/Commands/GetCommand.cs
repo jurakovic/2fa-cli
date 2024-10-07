@@ -3,25 +3,16 @@ using System;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2fa
 {
 	internal class GetCommand : Command
 	{
-		JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		public GetCommand()
+			: base("get", "Gets new OTP")
 		{
-			WriteIndented = true,
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-		};
-
-		public GetCommand() : base("get", "Gets new OTP")
-		{
-			var nameArgument = new Argument<string>(
-				name: "name",
-				description: "Name");
+			var nameArgument = new Argument<string>("name", "Name");
 
 			this.Add(nameArgument);
 			this.SetHandler(ExecuteAsync, nameArgument);
@@ -29,9 +20,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string name)
 		{
-			string file = Config.Path;
-
-			if (!File.Exists(file))
+			if (!File.Exists(Config.Path))
 			{
 				Console.WriteLine("No entries");
 			}

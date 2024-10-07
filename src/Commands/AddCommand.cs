@@ -1,31 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2fa
 {
 	internal class AddCommand : Command
 	{
-		JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		public AddCommand()
+			: base("add", "Adds a new 2FA entry")
 		{
-			WriteIndented = true,
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-		};
-
-		public AddCommand() : base("add", "Adds a new 2FA entry")
-		{
-			var secretArgument = new Argument<string>(
-				name: "secret",
-				description: "Secret key");
-
-			var nameArgument = new Argument<string>(
-				name: "name",
-				description: "Name");
+			var nameArgument = new Argument<string>("name", "Name");
+			var secretArgument = new Argument<string>("secret", "Secret key");
 
 			var typeOption = new Option<string>(
 				name: "--type",
@@ -60,27 +47,7 @@ namespace _2fa
 				return Task.FromResult(1);
 			}
 
-			string file = Config.Path;
-
-			if (File.Exists(file))
-			{
-				config = Config.Read();
-				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
-
-				if (String.IsNullOrWhiteSpace(password))
-				{
-					Console.Write("Enter password: ");
-					password = ConsoleHelper.ReadPassword();
-					ConsoleHelper.ClearLine();
-				}
-
-				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
-				{
-					Console.WriteLine("Wrong password");
-					return Task.FromResult(1);
-				}
-			}
-			else
+			if (!File.Exists(Config.Path))
 			{
 				Console.Write("First entry. Enter new password: ");
 				password = ConsoleHelper.ReadPassword();
@@ -102,32 +69,43 @@ namespace _2fa
 					return Task.FromResult(1);
 				}
 			}
-
-			Entry newEntry = new Entry()
+			else
 			{
-				Name = name,
-				Secret = Aes.EncryptString(password, secret),
-				Type = type,
-				Size = size,
-			};
+				config = Config.Read();
+				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
 
-			if (config.Entries == null)
+				if (String.IsNullOrWhiteSpace(password))
+				{
+					Console.Write("Enter password: ");
+					password = ConsoleHelper.ReadPassword();
+					ConsoleHelper.ClearLine();
+				}
+
+				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
+				{
+					Console.WriteLine("Wrong password");
+					return Task.FromResult(1);
+				}
+			}
+
+			Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+
+			if (entry != null)
 			{
-				config.Entries = new List<Entry>() { newEntry };
+				Console.WriteLine($"Entry '{name}' already exists.");
+				return Task.FromResult(1);
 			}
 			else
 			{
-				Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+				Entry newEntry = new Entry()
+				{
+					Name = name,
+					Secret = Aes.EncryptString(password, secret),
+					Type = type,
+					Size = size,
+				};
 
-				if (entry == null)
-				{
-					config.Entries.Add(newEntry);
-				}
-				else
-				{
-					Console.WriteLine($"Entry '{name}' already exists.");
-					return Task.CompletedTask;
-				}
+				config.Entries.Add(newEntry);
 			}
 
 			config.Write();

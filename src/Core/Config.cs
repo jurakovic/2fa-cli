@@ -15,7 +15,7 @@ namespace _2fa
 		};
 
 		public string PasswordHash { get; set; }
-		public List<Entry> Entries { get; set; }
+		public List<Entry> Entries { get; set; } = new List<Entry>();
 
 		[JsonIgnore]
 		public static string Path => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".2fa-cli.json");

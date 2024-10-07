@@ -2,25 +2,16 @@
 using System.CommandLine;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2fa
 {
 	internal class RemoveCommand : Command
 	{
-		JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		public RemoveCommand()
+			: base("remove", "Removes a 2FA entry")
 		{
-			WriteIndented = true,
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-		};
-
-		public RemoveCommand() : base("remove", "Removes a 2FA entry")
-		{
-			var nameArgument = new Argument<string>(
-				name: "name",
-				description: "Name");
+			var nameArgument = new Argument<string>("name", "Name");
 
 			this.Add(nameArgument);
 			this.AddAlias("rm");
@@ -29,9 +20,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string name)
 		{
-			string file = Config.Path;
-
-			if (!File.Exists(file))
+			if (!File.Exists(Config.Path))
 			{
 				Console.WriteLine("No entries");
 			}
@@ -43,7 +32,6 @@ namespace _2fa
 				if (entry == null)
 				{
 					Console.WriteLine($"Entry '{name}' not found.");
-					return Task.CompletedTask;
 				}
 				else
 				{
