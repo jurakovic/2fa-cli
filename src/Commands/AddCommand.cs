@@ -60,7 +60,10 @@ namespace _2fa
 				ConsoleHelper.ClearLine();
 
 				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
+				{
 					Console.WriteLine("Wrong password");
+					return Task.FromResult(1);
+				}
 			}
 			else
 			{
@@ -82,7 +85,7 @@ namespace _2fa
 				else
 				{
 					Console.WriteLine("Passwords don't match");
-					return Task.CompletedTask;
+					return Task.FromResult(1);
 				}
 			}
 

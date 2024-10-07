@@ -56,6 +56,7 @@ namespace _2fa
 				else
 				{
 					Console.WriteLine($"Wrong password");
+					return Task.FromResult(1);
 				}
 			}
 
