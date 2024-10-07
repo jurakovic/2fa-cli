@@ -4,13 +4,18 @@ using System.CommandLine;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2fa
 {
 	internal class GetCommand : Command
 	{
-		JsonSerializerOptions jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+		JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		{
+			WriteIndented = true,
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+		};
 
 		public GetCommand() : base("get", "Gets new OTP")
 		{
