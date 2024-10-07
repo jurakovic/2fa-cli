@@ -60,7 +60,7 @@ namespace _2fa
 				config = JsonSerializer.Deserialize<Config>(text);
 
 				Console.WriteLine("Enter password: ");
-				password = Console.ReadLine();
+				password = ConsoleHelper.GetConsolePassword();
 
 				bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, config.PasswordHash);
 
@@ -76,16 +76,26 @@ namespace _2fa
 			else
 			{
 				Console.WriteLine("Missing password");
-				Console.WriteLine("Enter new password: ");
-				password = Console.ReadLine();
+				Console.Write("Enter new password: ");
+				password = ConsoleHelper.GetConsolePassword();
+				Console.Write("Confirm password: ");
+				string confirm = ConsoleHelper.GetConsolePassword();
 
-				config = new Config();
-				config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-
-				File.WriteAllText(file, JsonSerializer.Serialize(config, new JsonSerializerOptions
+				if (confirm == password)
 				{
-					WriteIndented = true
-				}));
+					config = new Config();
+					config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+					File.WriteAllText(file, JsonSerializer.Serialize(config, new JsonSerializerOptions
+					{
+						WriteIndented = true
+					}));
+				}
+				else
+				{
+					Console.WriteLine("Passwords don't match");
+					return Task.CompletedTask;
+				}
 			}
 
 			Entry newEntry = new Entry()

@@ -32,8 +32,8 @@ namespace _2fa
 			}
 			else
 			{
-				Console.WriteLine("Enter password: ");
-				string password = Console.ReadLine();
+				Console.Write("Enter password: ");
+				string password = ConsoleHelper.GetConsolePassword();
 
 				string text = File.ReadAllText(file);
 				Config config = JsonSerializer.Deserialize<Config>(text);
