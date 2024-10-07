@@ -25,8 +25,8 @@ namespace _2fa
 			var typeOption = new Option<string>(
 				name: "--type",
 				description: "OTP type",
-				getDefaultValue: () => "totp");
-			typeOption.FromAmong("totp", "hotp");
+				getDefaultValue: () => EntryType.Totp);
+			typeOption.FromAmong(EntryType.Totp, EntryType.Hotp);
 			typeOption.AddAlias("-t");
 
 			var sizeOption = new Option<int>(
@@ -104,7 +104,7 @@ namespace _2fa
 			{
 				Name = name,
 				Secret = Aes.EncryptString(password, secret),
-				Type = EntryType.Totp, // todo
+				Type = type,
 				Size = size,
 			};
 

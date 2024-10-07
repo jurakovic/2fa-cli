@@ -10,6 +10,8 @@ namespace _2fa
 {
 	internal class GetCommand : Command
 	{
+		JsonSerializerOptions jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+
 		public GetCommand() : base("get", "Gets new OTP")
 		{
 			var nameArgument = new Argument<string>(
@@ -50,8 +52,22 @@ namespace _2fa
 					if (entry != null)
 					{
 						string secretKey = Aes.DecryptString(password, entry.Secret);
-						var totp = new Totp(Base32Encoding.ToBytes(secretKey));
-						Console.WriteLine(totp.ComputeTotp());
+						string otp;
+
+						if (entry.Type == EntryType.Totp)
+						{
+							var totp = new Totp(Base32Encoding.ToBytes(secretKey), totpSize: entry.Size);
+							otp = totp.ComputeTotp();
+						}
+						else
+						{
+							var hotp = new Hotp(Base32Encoding.ToBytes(secretKey), hotpSize: entry.Size);
+							otp = hotp.ComputeHOTP(entry.Counter);
+							entry.Counter++;
+							File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+						}
+
+						Console.WriteLine(otp);
 					}
 					else
 					{

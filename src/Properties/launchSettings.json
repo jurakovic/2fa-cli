@@ -3,8 +3,8 @@
     "2fa": {
       "commandName": "Project",
       "commandLineArgs_": "add gh nzxxiidbebvwk6jb",
-      "commandLineArgs": "add gh1 2345",
-      "commandLineArgs1": "get gh"
+      "commandLineArgs1": "add ghh nzxxiidbebvwk6jb -t hotp",
+      "commandLineArgs": "get ghh"
     }
   }
 }

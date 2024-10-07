@@ -1,6 +1,6 @@
 ﻿
-enum EntryType
+public struct EntryType
 {
-	Totp,
-	Hotp
+	public const string Totp = "totp";
+	public const string Hotp = "hotp";
 }
