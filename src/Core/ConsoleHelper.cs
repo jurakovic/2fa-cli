@@ -21,7 +21,7 @@ namespace _2fa
 				{
 					if (sb.Length > 0)
 					{
-						Console.Write("\b\0\b");
+						//Console.Write("\b\0\b");
 						sb.Length--;
 					}
 
@@ -39,7 +39,7 @@ namespace _2fa
 		public static void ClearLine()
 		{
 			Console.SetCursorPosition(0, Console.CursorTop - 1);
-			for (int i = 0; i < 40; i++)
+			for (int i = 0; i < Console.WindowWidth; i++)
 				Console.Write(" ");
 			Console.SetCursorPosition(0, Console.CursorTop);
 		}
