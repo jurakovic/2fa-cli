@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -64,10 +62,9 @@ namespace _2fa
 				Console.WriteLine("Enter password: ");
 				password = Console.ReadLine();
 
-				var tt = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-				string passhash = Convert.ToBase64String(tt);
+				bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, config.PasswordHash);
 
-				if (passhash != config.PasswordHash)
+				if (!isPasswordValid)
 				{
 					Console.WriteLine("Wrong password");
 					// todo: exit 1
@@ -83,8 +80,7 @@ namespace _2fa
 				password = Console.ReadLine();
 
 				config = new Config();
-				var tt = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-				config.PasswordHash = Convert.ToBase64String(tt);
+				config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
 				File.WriteAllText(file, JsonSerializer.Serialize(config, new JsonSerializerOptions
 				{

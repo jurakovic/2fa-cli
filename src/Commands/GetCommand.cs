@@ -1,12 +1,10 @@
-﻿using System;
+﻿using OtpNet;
+using System;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using OtpNet;
 
 namespace _2fa
 {
@@ -40,10 +38,9 @@ namespace _2fa
 				string text = File.ReadAllText(file);
 				Config config = JsonSerializer.Deserialize<Config>(text);
 
-				var tt = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-				string passhash = Convert.ToBase64String(tt);
+				bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, config.PasswordHash);
 
-				if (passhash == config.PasswordHash)
+				if (isPasswordValid)
 				{
 					Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
 
@@ -57,6 +54,10 @@ namespace _2fa
 					{
 						Console.WriteLine($"No '{name}' entry");
 					}
+				}
+				else
+				{
+					Console.WriteLine($"Wrong password");
 				}
 
 			}
