@@ -10,6 +10,7 @@ namespace _2fa
 
 			rootCommand.AddCommand(new AddCommand());
 			rootCommand.AddCommand(new GetCommand());
+			rootCommand.AddCommand(new ListCommand());
 
 			return rootCommand;
 		}
