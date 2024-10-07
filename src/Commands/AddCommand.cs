@@ -60,7 +60,7 @@ namespace _2fa
 				return Task.FromResult(1);
 			}
 
-			string userPath = Environment.GetEnvironmentVariable("USERPROFILE");
+			string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			string file = Path.Combine(userPath, ".2fa-cli.json");
 
 			if (File.Exists(file))
