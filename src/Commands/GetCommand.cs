@@ -28,7 +28,6 @@ namespace _2fa
 			if (!File.Exists(file))
 			{
 				Console.WriteLine("No entries");
-				// todo: exit 1
 			}
 			else
 			{
@@ -38,15 +37,13 @@ namespace _2fa
 				string text = File.ReadAllText(file);
 				Config config = JsonSerializer.Deserialize<Config>(text);
 
-				bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, config.PasswordHash);
-
-				if (isPasswordValid)
+				if (BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{
 					Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
 
 					if (entry != null)
 					{
-						string secretKey = Aes.DecryptString(password, entry.SecretEncrypted);
+						string secretKey = Aes.DecryptString(password, entry.Secret);
 						var totp = new Totp(Base32Encoding.ToBytes(secretKey));
 						Console.WriteLine(totp.ComputeTotp());
 					}
@@ -59,7 +56,6 @@ namespace _2fa
 				{
 					Console.WriteLine($"Wrong password");
 				}
-
 			}
 
 			return Task.CompletedTask;

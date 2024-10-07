@@ -10,6 +10,8 @@ namespace _2fa
 {
 	internal class AddCommand : Command
 	{
+		JsonSerializerOptions jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+
 		public AddCommand() : base("add", "Adds a new 2FA entry")
 		{
 			var secretArgument = new Argument<string>(
@@ -27,27 +29,22 @@ namespace _2fa
 			typeOption.FromAmong("totp", "hotp");
 			typeOption.AddAlias("-t");
 
-			var lengthOption = new Option<int>(
-				name: "--length",
-				description: "OTP length",
+			var sizeOption = new Option<int>(
+				name: "--size",
+				description: "OTP size",
 				getDefaultValue: () => 6);
-			lengthOption.FromAmong(Enumerable.Range(4, 5).Select(x => x.ToString()).ToArray());
-			lengthOption.AddAlias("-l");
+			sizeOption.FromAmong(Enumerable.Range(4, 5).Select(x => x.ToString()).ToArray());
+			sizeOption.AddAlias("-l");
 
 			this.Add(nameArgument);
 			this.Add(secretArgument);
 			this.Add(typeOption);
-			this.Add(lengthOption);
-			this.SetHandler(ExecuteAsync, nameArgument, secretArgument, typeOption, lengthOption);
+			this.Add(sizeOption);
+			this.SetHandler(ExecuteAsync, nameArgument, secretArgument, typeOption, sizeOption);
 		}
 
-		private Task ExecuteAsync(string name, string secret, string type, int length)
+		private Task ExecuteAsync(string name, string secret, string type, int size)
 		{
-			Console.WriteLine($"name     = {name}");
-			Console.WriteLine($"secret   = {secret}");
-			Console.WriteLine($"--type   = {type}");
-			Console.WriteLine($"--length = {length}");
-
 			Config config;
 			string password;
 
@@ -56,40 +53,26 @@ namespace _2fa
 
 			if (File.Exists(file))
 			{
-				string text = File.ReadAllText(file);
-				config = JsonSerializer.Deserialize<Config>(text);
+				config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
 
 				Console.WriteLine("Enter password: ");
 				password = ConsoleHelper.GetConsolePassword();
-
-				bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, config.PasswordHash);
-
-				if (!isPasswordValid)
-				{
+				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 					Console.WriteLine("Wrong password");
-					// todo: exit 1
-				}
-
-				//Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
-				//var decry = AesOperation.DecryptString(password, entry.SecretEncrypted);
 			}
 			else
 			{
-				Console.WriteLine("Missing password");
-				Console.Write("Enter new password: ");
+				Console.Write("First entry. Enter new password: ");
 				password = ConsoleHelper.GetConsolePassword();
 				Console.Write("Confirm password: ");
 				string confirm = ConsoleHelper.GetConsolePassword();
 
-				if (confirm == password)
+				if (password == confirm)
 				{
 					config = new Config();
 					config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
-					File.WriteAllText(file, JsonSerializer.Serialize(config, new JsonSerializerOptions
-					{
-						WriteIndented = true
-					}));
+					File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
 				}
 				else
 				{
@@ -101,9 +84,9 @@ namespace _2fa
 			Entry newEntry = new Entry()
 			{
 				Name = name,
-				SecretEncrypted = Aes.EncryptString(password, secret),
+				Secret = Aes.EncryptString(password, secret),
 				Type = EntryType.Totp, // todo
-				Size = length,
+				Size = size,
 			};
 
 			if (config.Entries == null)
@@ -112,13 +95,20 @@ namespace _2fa
 			}
 			else
 			{
-				config.Entries.Add(newEntry);
+				Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+
+				if (entry == null)
+				{
+					config.Entries.Add(newEntry);
+				}
+				else
+				{
+					Console.WriteLine($"'{name}' already exists.");
+					return Task.CompletedTask;
+				}
 			}
 
-			File.WriteAllText(file, JsonSerializer.Serialize(config, new JsonSerializerOptions
-			{
-				WriteIndented = true
-			}));
+			File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
 			return Task.CompletedTask;
 		}
 	}
