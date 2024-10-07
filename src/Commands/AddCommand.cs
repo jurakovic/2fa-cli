@@ -56,7 +56,7 @@ namespace _2fa
 				config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
 
 				Console.Write("Enter password: ");
-				password = ConsoleHelper.GetConsolePassword();
+				password = ConsoleHelper.ReadPassword();
 				ConsoleHelper.ClearLine();
 
 				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
@@ -68,9 +68,9 @@ namespace _2fa
 			else
 			{
 				Console.Write("First entry. Enter new password: ");
-				password = ConsoleHelper.GetConsolePassword();
+				password = ConsoleHelper.ReadPassword();
 				Console.Write("Confirm password: ");
-				string confirm = ConsoleHelper.GetConsolePassword();
+				string confirm = ConsoleHelper.ReadPassword();
 
 				ConsoleHelper.ClearLine();
 				ConsoleHelper.ClearLine();

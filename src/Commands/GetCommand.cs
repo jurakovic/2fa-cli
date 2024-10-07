@@ -32,7 +32,7 @@ namespace _2fa
 			else
 			{
 				Console.Write("Enter password: ");
-				string password = ConsoleHelper.GetConsolePassword();
+				string password = ConsoleHelper.ReadPassword();
 				ConsoleHelper.ClearLine();
 
 				string text = File.ReadAllText(file);

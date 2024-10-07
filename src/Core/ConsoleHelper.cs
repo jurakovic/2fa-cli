@@ -5,7 +5,7 @@ namespace _2fa
 {
 	internal static class ConsoleHelper
 	{
-		public static string GetConsolePassword()
+		public static string ReadPassword()
 		{
 			StringBuilder sb = new StringBuilder();
 			while (true)
