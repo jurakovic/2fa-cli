@@ -4,6 +4,7 @@ using System.CommandLine;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TextCopy;
 
 namespace _2fa
 {
@@ -14,11 +15,15 @@ namespace _2fa
 		{
 			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
+			var noClipboardOption = new Option<bool>("--no-clipboard", () => false, "Disable copying to clipboard");
+			noClipboardOption.AddAlias("-nc");
+
 			this.Add(serviceArgument);
-			this.SetHandler(ExecuteAsync, serviceArgument);
+			this.Add(noClipboardOption);
+			this.SetHandler(ExecuteAsync, serviceArgument, noClipboardOption);
 		}
 
-		private Task ExecuteAsync(string service)
+		private Task ExecuteAsync(string service, bool noClipboard)
 		{
 			if (!File.Exists(Config.Path))
 			{
@@ -60,6 +65,9 @@ namespace _2fa
 						}
 
 						Console.WriteLine(otp);
+
+						if (!noClipboard)
+							ClipboardService.SetText(otp);
 					}
 					else
 					{
