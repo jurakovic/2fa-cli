@@ -48,6 +48,13 @@ namespace _2fa
 			Config config;
 			string password;
 
+			secret = secret.PadRight(16, '=');
+			if (!EntryHelper.IsValidSecret(secret))
+			{
+				Console.WriteLine("Invalid secret");
+				return Task.FromResult(1);
+			}
+
 			string userPath = Environment.GetEnvironmentVariable("USERPROFILE");
 			string file = Path.Combine(userPath, ".2fa-cli.json");
 
@@ -96,7 +103,7 @@ namespace _2fa
 			Entry newEntry = new Entry()
 			{
 				Name = name,
-				Secret = Aes.EncryptString(password, secret.PadRight(16, '=')),
+				Secret = Aes.EncryptString(password, secret),
 				Type = EntryType.Totp, // todo
 				Size = size,
 			};
@@ -115,7 +122,7 @@ namespace _2fa
 				}
 				else
 				{
-					Console.WriteLine($"'{name}' already exists.");
+					Console.WriteLine($"Entry '{name}' already exists.");
 					return Task.CompletedTask;
 				}
 			}

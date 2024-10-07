@@ -2,8 +2,9 @@
   "profiles": {
     "2fa": {
       "commandName": "Project",
-      "commandLineArgs": "add gh nzxxiidbebvwk6jb",
-      "commandLineArgs_": "get gh"
+      "commandLineArgs_": "add gh nzxxiidbebvwk6jb",
+      "commandLineArgs": "add gh1 2345",
+      "commandLineArgs1": "get gh"
     }
   }
 }
