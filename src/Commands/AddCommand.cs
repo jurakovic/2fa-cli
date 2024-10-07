@@ -83,7 +83,7 @@ namespace _2fa
 				}
 			}
 
-			Entry entry = config.Entries.SingleOrDefault(x => x.Service == service);
+			Entry entry = config.Entries.SingleOrDefault(x => x.Service.ToUpper() == service.ToUpper());
 
 			if (entry != null)
 			{
@@ -104,7 +104,7 @@ namespace _2fa
 			}
 
 			config.Write();
-			Console.WriteLine($"OK");
+			Console.WriteLine($"Entry '{service}' added.");
 			return Task.CompletedTask;
 		}
 	}

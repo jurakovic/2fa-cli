@@ -27,7 +27,7 @@ namespace _2fa
 			else
 			{
 				Config config = Config.Read();
-				Entry entry = config.Entries.SingleOrDefault(x => x.Service == service);
+				Entry entry = config.Entries.SingleOrDefault(x => x.Service.ToUpper() == service.ToUpper());
 
 				if (entry == null)
 				{
@@ -37,7 +37,7 @@ namespace _2fa
 				{
 					config.Entries.Remove(entry);
 					config.Write();
-					Console.WriteLine($"OK");
+					Console.WriteLine($"Entry '{service}' removed.");
 				}
 			}
 			return Task.CompletedTask;
