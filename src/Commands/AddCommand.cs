@@ -43,7 +43,6 @@ namespace _2fa
 			this.SetHandler(ExecuteAsync, nameArgument, secretArgument, typeOption, lengthOption);
 		}
 
-		// Command logic should be encapsulated in this method, avoiding the handler to become too complex
 		private Task ExecuteAsync(string name, string secret, string type, int length)
 		{
 			Console.WriteLine($"name     = {name}");
@@ -56,6 +55,7 @@ namespace _2fa
 
 			string userPath = Environment.GetEnvironmentVariable("USERPROFILE");
 			string file = Path.Combine(userPath, ".2fa-cli.json");
+
 			if (File.Exists(file))
 			{
 				string text = File.ReadAllText(file);

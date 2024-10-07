@@ -9,6 +9,7 @@ namespace _2fa
 			var rootCommand = new RootCommand("2fa command line tool");
 
 			rootCommand.AddCommand(new AddCommand());
+			rootCommand.AddCommand(new GetCommand());
 
 			return rootCommand;
 		}
