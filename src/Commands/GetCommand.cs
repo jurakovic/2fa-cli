@@ -46,7 +46,7 @@ namespace _2fa
 
 					if (entry != null)
 					{
-						string secretKey = AesOperation.DecryptString(password, entry.SecretEncrypted);
+						string secretKey = Aes.DecryptString(password, entry.SecretEncrypted);
 						var totp = new Totp(Base32Encoding.ToBytes(secretKey));
 						Console.WriteLine(totp.ComputeTotp());
 					}

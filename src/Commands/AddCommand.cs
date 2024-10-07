@@ -91,7 +91,7 @@ namespace _2fa
 			Entry newEntry = new Entry()
 			{
 				Name = name,
-				SecretEncrypted = AesOperation.EncryptString(password, secret),
+				SecretEncrypted = Aes.EncryptString(password, secret),
 				Type = EntryType.Totp, // todo
 				Size = length,
 			};
