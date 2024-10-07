@@ -29,7 +29,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string name)
 		{
-			string file = Config.File;
+			string file = Config.Path;
 
 			if (!File.Exists(file))
 			{
@@ -37,7 +37,7 @@ namespace _2fa
 			}
 			else
 			{
-				Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
+				Config config = Config.Read();
 				Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
 
 				if (entry == null)

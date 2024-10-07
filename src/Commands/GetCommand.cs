@@ -29,7 +29,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string name)
 		{
-			string file = Config.File;
+			string file = Config.Path;
 
 			if (!File.Exists(file))
 			{
@@ -46,8 +46,7 @@ namespace _2fa
 					ConsoleHelper.ClearLine();
 				}
 
-				string text = File.ReadAllText(file);
-				Config config = JsonSerializer.Deserialize<Config>(text);
+				Config config = Config.Read();
 
 				if (BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{

@@ -16,7 +16,7 @@ namespace _2fa
 
 		private Task ExecuteAsync()
 		{
-			string file = Config.File;
+			string file = Config.Path;
 
 			if (!File.Exists(file))
 			{
@@ -24,8 +24,7 @@ namespace _2fa
 			}
 			else
 			{
-				string text = File.ReadAllText(file);
-				Config config = JsonSerializer.Deserialize<Config>(text);
+				Config config = Config.Read();
 
 				foreach (Entry e in config.Entries.OrderBy(x => x.Name))
 					Console.WriteLine(e.Name);

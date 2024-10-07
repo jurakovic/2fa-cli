@@ -60,11 +60,11 @@ namespace _2fa
 				return Task.FromResult(1);
 			}
 
-			string file = Config.File;
+			string file = Config.Path;
 
 			if (File.Exists(file))
 			{
-				config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
+				config = Config.Read();
 				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
 
 				if (String.IsNullOrWhiteSpace(password))
