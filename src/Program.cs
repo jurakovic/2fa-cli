@@ -119,12 +119,17 @@ namespace _2fa
 			rootCommand.Add(addCommand);
 
 			var getCommand = new Command("get", "Get OTP");
-			getCommand.Add(nameArgument);
+
+			var getNameArgument = new Argument<string>(
+				name: "name",
+				description: "Name");
+
+			getCommand.Add(getNameArgument);
 			getCommand.SetHandler((name) =>
 			{
 				Console.WriteLine($"name   = {name}");
 			},
-			nameArgument);
+			getNameArgument);
 			rootCommand.Add(getCommand);
 
 			var listCommand = new Command("list", "List all entries");
