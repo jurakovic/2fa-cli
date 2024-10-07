@@ -39,7 +39,7 @@ namespace _2fa
 
 				if (BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{
-					Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+					Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
 
 					if (entry != null)
 					{

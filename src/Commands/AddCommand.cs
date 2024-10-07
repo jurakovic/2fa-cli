@@ -14,19 +14,13 @@ namespace _2fa
 			var nameArgument = new Argument<string>("name", "Name");
 			var secretArgument = new Argument<string>("secret", "Secret key");
 
-			var typeOption = new Option<string>(
-				name: "--type",
-				description: "OTP type",
-				getDefaultValue: () => EntryType.Totp);
+			var typeOption = new Option<string>("--type", () => EntryType.Totp, "OTP type");
 			typeOption.FromAmong(EntryType.Totp, EntryType.Hotp);
 			typeOption.AddAlias("-t");
 
-			var sizeOption = new Option<int>(
-				name: "--size",
-				description: "OTP size",
-				getDefaultValue: () => 6);
+			var sizeOption = new Option<int>("--size", () => 6, "OTP size");
 			sizeOption.FromAmong(Enumerable.Range(4, 5).Select(x => x.ToString()).ToArray());
-			sizeOption.AddAlias("-l");
+			sizeOption.AddAlias("-s");
 
 			this.Add(nameArgument);
 			this.Add(secretArgument);
@@ -88,7 +82,7 @@ namespace _2fa
 				}
 			}
 
-			Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+			Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
 
 			if (entry != null)
 			{

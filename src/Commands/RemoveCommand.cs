@@ -27,7 +27,7 @@ namespace _2fa
 			else
 			{
 				Config config = Config.Read();
-				Entry entry = config.Entries.FirstOrDefault(x => x.Name == name);
+				Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
 
 				if (entry == null)
 				{
