@@ -29,8 +29,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string name)
 		{
-			string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-			string file = Path.Combine(userPath, ".2fa-cli.json");
+			string file = Config.File;
 
 			if (!File.Exists(file))
 			{
