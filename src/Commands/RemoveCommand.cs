@@ -9,16 +9,16 @@ namespace _2fa
 	internal class RemoveCommand : Command
 	{
 		public RemoveCommand()
-			: base("remove", "Removes a 2FA entry")
+			: base("remove", "Removes an existing 2FA entry from storage")
 		{
-			var nameArgument = new Argument<string>("name", "Name");
+			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
-			this.Add(nameArgument);
+			this.Add(serviceArgument);
 			this.AddAlias("rm");
-			this.SetHandler(ExecuteAsync, nameArgument);
+			this.SetHandler(ExecuteAsync, serviceArgument);
 		}
 
-		private Task ExecuteAsync(string name)
+		private Task ExecuteAsync(string service)
 		{
 			if (!File.Exists(Config.Path))
 			{
@@ -27,11 +27,11 @@ namespace _2fa
 			else
 			{
 				Config config = Config.Read();
-				Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
+				Entry entry = config.Entries.SingleOrDefault(x => x.Service == service);
 
 				if (entry == null)
 				{
-					Console.WriteLine($"Entry '{name}' not found.");
+					Console.WriteLine($"Entry '{service}' not found.");
 				}
 				else
 				{

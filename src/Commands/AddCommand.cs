@@ -9,27 +9,28 @@ namespace _2fa
 	internal class AddCommand : Command
 	{
 		public AddCommand()
-			: base("add", "Adds a new 2FA entry")
+			: base("add", "Adds a new 2FA entry to the storage")
 		{
-			var nameArgument = new Argument<string>("name", "Name");
-			var secretArgument = new Argument<string>("secret", "Secret key");
+			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
-			var typeOption = new Option<string>("--type", () => EntryType.Totp, "OTP type");
+			var secretArgument = new Argument<string>("secret-key", "The base32-encoded secret key used to generate the OTP");
+
+			var typeOption = new Option<string>("--type", () => EntryType.Totp, "The type of OTP");
 			typeOption.FromAmong(EntryType.Totp, EntryType.Hotp);
 			typeOption.AddAlias("-t");
 
-			var sizeOption = new Option<int>("--size", () => 6, "OTP size");
-			sizeOption.FromAmong(Enumerable.Range(4, 5).Select(x => x.ToString()).ToArray());
-			sizeOption.AddAlias("-s");
+			var digitsOption = new Option<int>("--digits", () => 6, "The number of digits in the OTP code");
+			digitsOption.FromAmong("6", "8");
+			digitsOption.AddAlias("-d");
 
-			this.Add(nameArgument);
+			this.Add(serviceArgument);
 			this.Add(secretArgument);
 			this.Add(typeOption);
-			this.Add(sizeOption);
-			this.SetHandler(ExecuteAsync, nameArgument, secretArgument, typeOption, sizeOption);
+			this.Add(digitsOption);
+			this.SetHandler(ExecuteAsync, serviceArgument, secretArgument, typeOption, digitsOption);
 		}
 
-		private Task ExecuteAsync(string name, string secret, string type, int size)
+		private Task ExecuteAsync(string service, string secret, string type, int digits)
 		{
 			Config config;
 			string password;
@@ -82,24 +83,24 @@ namespace _2fa
 				}
 			}
 
-			Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
+			Entry entry = config.Entries.SingleOrDefault(x => x.Service == service);
 
 			if (entry != null)
 			{
-				Console.WriteLine($"Entry '{name}' already exists.");
+				Console.WriteLine($"Entry '{service}' already exists.");
 				return Task.FromResult(1);
 			}
 			else
 			{
-				Entry newEntry = new Entry()
+				entry = new Entry()
 				{
-					Name = name,
-					Secret = Aes.EncryptString(password, secret),
+					Service = service,
+					SecretKey = Aes.EncryptString(password, secret),
 					Type = type,
-					Size = size,
+					Digits = digits,
 				};
 
-				config.Entries.Add(newEntry);
+				config.Entries.Add(entry);
 			}
 
 			config.Write();

@@ -2,10 +2,10 @@
 {
 	internal class Entry
 	{
-		public string Name { get; init; }
-		public string Secret { get; init; }
+		public string Service { get; init; }
+		public string SecretKey { get; init; }
 		public string Type { get; init; }
-		public int Size { get; init; }
+		public int Digits { get; init; }
 		public long Counter { get; set; }
 	}
 }

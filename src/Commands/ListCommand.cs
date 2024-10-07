@@ -9,7 +9,7 @@ namespace _2fa
 	internal class ListCommand : Command
 	{
 		public ListCommand()
-			: base("list", "List all entries")
+			: base("list", "Lists all stored 2FA entries")
 		{
 			this.SetHandler(ExecuteAsync);
 		}
@@ -24,8 +24,8 @@ namespace _2fa
 			{
 				Config config = Config.Read();
 
-				foreach (Entry e in config.Entries.OrderBy(x => x.Name))
-					Console.WriteLine(e.Name);
+				foreach (Entry e in config.Entries.OrderBy(x => x.Service))
+					Console.WriteLine(e.Service);
 			}
 
 			return Task.CompletedTask;

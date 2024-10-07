@@ -10,15 +10,15 @@ namespace _2fa
 	internal class GetCommand : Command
 	{
 		public GetCommand()
-			: base("get", "Gets new OTP")
+			: base("get", "Retrieves the current OTP code for a specified 2FA entry")
 		{
-			var nameArgument = new Argument<string>("name", "Name");
+			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
-			this.Add(nameArgument);
-			this.SetHandler(ExecuteAsync, nameArgument);
+			this.Add(serviceArgument);
+			this.SetHandler(ExecuteAsync, serviceArgument);
 		}
 
-		private Task ExecuteAsync(string name)
+		private Task ExecuteAsync(string service)
 		{
 			if (!File.Exists(Config.Path))
 			{
@@ -39,21 +39,21 @@ namespace _2fa
 
 				if (BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{
-					Entry entry = config.Entries.SingleOrDefault(x => x.Name == name);
+					Entry entry = config.Entries.SingleOrDefault(x => x.Service == service);
 
 					if (entry != null)
 					{
-						string secretKey = Aes.DecryptString(password, entry.Secret);
+						string secretKey = Aes.DecryptString(password, entry.SecretKey);
 						string otp;
 
 						if (entry.Type == EntryType.Totp)
 						{
-							var totp = new Totp(Base32Encoding.ToBytes(secretKey), totpSize: entry.Size);
+							var totp = new Totp(Base32Encoding.ToBytes(secretKey), totpSize: entry.Digits);
 							otp = totp.ComputeTotp();
 						}
 						else
 						{
-							var hotp = new Hotp(Base32Encoding.ToBytes(secretKey), hotpSize: entry.Size);
+							var hotp = new Hotp(Base32Encoding.ToBytes(secretKey), hotpSize: entry.Digits);
 							otp = hotp.ComputeHOTP(entry.Counter);
 							entry.Counter++;
 							config.Write();
@@ -63,7 +63,7 @@ namespace _2fa
 					}
 					else
 					{
-						Console.WriteLine($"No '{name}' entry");
+						Console.WriteLine($"No '{service}' entry");
 					}
 				}
 				else
