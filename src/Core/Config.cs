@@ -8,9 +8,10 @@ namespace _2fa
 {
 	internal class Config
 	{
-		JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+		static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
 		{
 			WriteIndented = true,
+			TypeInfoResolver = ConfigJsonContext.Default,
 			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 		};
 
@@ -22,7 +23,7 @@ namespace _2fa
 
 		public static Config Read()
 		{
-			return JsonSerializer.Deserialize<Config>(File.ReadAllText(Path));
+			return JsonSerializer.Deserialize<Config>(File.ReadAllText(Path), _jsonOptions);
 		}
 
 		public void Write()
