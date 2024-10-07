@@ -48,7 +48,7 @@ namespace _2fa
 				else
 				{
 					config.Entries.Remove(entry);
-					File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+					config.Write();
 					Console.WriteLine($"OK");
 				}
 			}

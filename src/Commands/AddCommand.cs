@@ -94,8 +94,7 @@ namespace _2fa
 				{
 					config = new Config();
 					config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-
-					File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+					config.Write();
 				}
 				else
 				{
@@ -131,7 +130,7 @@ namespace _2fa
 				}
 			}
 
-			File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+			config.Write();
 			Console.WriteLine($"OK");
 			return Task.CompletedTask;
 		}

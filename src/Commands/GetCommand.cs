@@ -67,7 +67,7 @@ namespace _2fa
 							var hotp = new Hotp(Base32Encoding.ToBytes(secretKey), hotpSize: entry.Size);
 							otp = hotp.ComputeHOTP(entry.Counter);
 							entry.Counter++;
-							File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+							config.Write();
 						}
 
 						Console.WriteLine(otp);
