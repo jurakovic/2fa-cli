@@ -54,10 +54,14 @@ namespace _2fa
 			if (File.Exists(file))
 			{
 				config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
+				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
 
-				Console.Write("Enter password: ");
-				password = ConsoleHelper.ReadPassword();
-				ConsoleHelper.ClearLine();
+				if (String.IsNullOrWhiteSpace(password))
+				{
+					Console.Write("Enter password: ");
+					password = ConsoleHelper.ReadPassword();
+					ConsoleHelper.ClearLine();
+				}
 
 				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{

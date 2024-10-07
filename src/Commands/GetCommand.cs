@@ -31,9 +31,14 @@ namespace _2fa
 			}
 			else
 			{
-				Console.Write("Enter password: ");
-				string password = ConsoleHelper.ReadPassword();
-				ConsoleHelper.ClearLine();
+				string password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
+
+				if (String.IsNullOrWhiteSpace(password))
+				{
+					Console.Write("Enter password: ");
+					password = ConsoleHelper.ReadPassword();
+					ConsoleHelper.ClearLine();
+				}
 
 				string text = File.ReadAllText(file);
 				Config config = JsonSerializer.Deserialize<Config>(text);
