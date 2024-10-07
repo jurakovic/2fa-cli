@@ -18,19 +18,19 @@ namespace _2fa
 
 			var addCommand = new Command("add", "Add new entry");
 
-			var kindOption = new Option<string>(
-				name: "--kind",
-				description: "Kind.",
+			var typeOption = new Option<string>(
+				name: "--type",
+				description: "OTP type",
 				getDefaultValue: () => "totp");
-			kindOption.FromAmong("totp", "hotp");
-			kindOption.AddAlias("-k");
+			typeOption.FromAmong("totp", "hotp");
+			typeOption.AddAlias("-t");
 
 			var sizeOption = new Option<int>(
-				name: "--size",
-				description: "Size.",
+				name: "--length",
+				description: "OTP length",
 				getDefaultValue: () => 6);
 			sizeOption.FromAmong(Enumerable.Range(4, 5).Select(x => x.ToString()).ToArray());
-			sizeOption.AddAlias("-s");
+			sizeOption.AddAlias("-l");
 
 			var secretArgument = new Argument<string>(
 				name: "secret",
@@ -42,14 +42,14 @@ namespace _2fa
 
 			addCommand.Add(nameArgument);
 			addCommand.Add(secretArgument);
-			addCommand.Add(kindOption);
+			addCommand.Add(typeOption);
 			addCommand.Add(sizeOption);
 
-			addCommand.SetHandler((name, secret, kind, size) =>
+			addCommand.SetHandler((name, secret, type, size) =>
 			{
 				Console.WriteLine($"name   = {name}");
 				Console.WriteLine($"secret = {secret}");
-				Console.WriteLine($"--kind = {kind}");
+				Console.WriteLine($"--type = {type}");
 				Console.WriteLine($"--size = {size}");
 
 				Config config;
@@ -115,7 +115,7 @@ namespace _2fa
 					WriteIndented = true
 				}));
 			},
-			nameArgument, secretArgument, kindOption, sizeOption);
+			nameArgument, secretArgument, typeOption, sizeOption);
 			rootCommand.Add(addCommand);
 
 			var getCommand = new Command("get", "Get OTP");
@@ -159,7 +159,6 @@ namespace _2fa
 		Totp,
 		Hotp
 	}
-
 
 	public class AesOperation
 	{
