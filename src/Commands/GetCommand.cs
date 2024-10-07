@@ -33,7 +33,7 @@ namespace _2fa
 			{
 				Console.Write("Enter password: ");
 				string password = ConsoleHelper.GetConsolePassword();
-
+				ConsoleHelper.ClearLine();
 
 				string text = File.ReadAllText(file);
 				Config config = JsonSerializer.Deserialize<Config>(text);
@@ -46,7 +46,6 @@ namespace _2fa
 					{
 						string secretKey = Aes.DecryptString(password, entry.Secret);
 						var totp = new Totp(Base32Encoding.ToBytes(secretKey));
-						//Console.SetCursorPosition(0, Console.CursorTop - 1); // todo
 						Console.WriteLine(totp.ComputeTotp());
 					}
 					else

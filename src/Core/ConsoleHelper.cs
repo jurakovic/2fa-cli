@@ -35,5 +35,13 @@ namespace _2fa
 			//Console.WriteLine(sb.ToString());
 			return sb.ToString();
 		}
+
+		public static void ClearLine()
+		{
+			Console.SetCursorPosition(0, Console.CursorTop - 1);
+			for (int i = 0; i < 40; i++)
+				Console.Write(" ");
+			Console.SetCursorPosition(0, Console.CursorTop);
+		}
 	}
 }

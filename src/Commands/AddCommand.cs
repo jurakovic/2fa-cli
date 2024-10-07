@@ -55,8 +55,10 @@ namespace _2fa
 			{
 				config = JsonSerializer.Deserialize<Config>(File.ReadAllText(file));
 
-				Console.WriteLine("Enter password: ");
+				Console.Write("Enter password: ");
 				password = ConsoleHelper.GetConsolePassword();
+				ConsoleHelper.ClearLine();
+
 				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 					Console.WriteLine("Wrong password");
 			}
@@ -66,6 +68,9 @@ namespace _2fa
 				password = ConsoleHelper.GetConsolePassword();
 				Console.Write("Confirm password: ");
 				string confirm = ConsoleHelper.GetConsolePassword();
+
+				ConsoleHelper.ClearLine();
+				ConsoleHelper.ClearLine();
 
 				if (password == confirm)
 				{
@@ -109,6 +114,7 @@ namespace _2fa
 			}
 
 			File.WriteAllText(file, JsonSerializer.Serialize(config, jsonOptions));
+			Console.WriteLine($"OK");
 			return Task.CompletedTask;
 		}
 	}
