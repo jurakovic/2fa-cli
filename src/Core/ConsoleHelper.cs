@@ -20,19 +20,14 @@ namespace _2fa
 				if (cki.Key == ConsoleKey.Backspace)
 				{
 					if (sb.Length > 0)
-					{
-						//Console.Write("\b\0\b");
 						sb.Length--;
-					}
 
 					continue;
 				}
 
-				//Console.Write('*');
 				sb.Append(cki.KeyChar);
 			}
 
-			//Console.WriteLine(sb.ToString());
 			return sb.ToString();
 		}
 

@@ -16,7 +16,7 @@ namespace _2fa
 			{
 				byte[] keyBytes = Base32Encoding.ToBytes(secretKey);
 				var totp = new Totp(keyBytes);
-				string otpCode = totp.ComputeTotp();
+				totp.ComputeTotp();
 				return true;
 			}
 			catch
