@@ -14,7 +14,7 @@ ARCH="win-x64"
 _subcommand_values=("publish" "package" "release")
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
-_arch_values=("win-x64" "win-x86" "linux-x64" "linux-arm")
+_arch_values=("win-x64" "linux-x64")
 
 # Colors
 Color_Off='\033[0m'
@@ -23,9 +23,6 @@ Color_Yellow='\033[0;33m'
 
 function main() {
     read_args "$@"
-
-    read -p "Press any key to continue..." -n1 -s; echo
-    echo
 
     case "$SUBCOMMAND" in
       "publish") publish ;;
@@ -180,6 +177,9 @@ function read_args() {
     echo "BRANCH:     $BRANCH"
     echo "COMMIT:     $COMMIT"
     echo "MESSAGE:    $MESSAGE"
+
+    read -p "Press any key to continue..." -n1 -s; echo
+    echo
 }
 
 function help() {
