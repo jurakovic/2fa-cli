@@ -7,15 +7,19 @@ MESSAGE=""
 VERSION="auto"
 BUMP_TYPE="patch"
 PREVIEW="auto"
+ARCH="win-x64"
 
 # Allowed values
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
+_arch_values=("win-x64" "win-x86" "linux-x64" "linux-arm")
 
 # Colors
 Color_Off='\033[0m'
 Color_Green='\033[0;32m'
 Color_Yellow='\033[0;33m'
+
+# add 3 steps: build, publish (zip), finalize (commit)
 
 function main() {
     read_args "$@"
@@ -23,42 +27,40 @@ function main() {
     read -p "Press any key to continue..." -n1 -s; echo
     echo
 
-    archs=()
-    archs+=("win-x64")
-    archs+=("win-x86")
-    archs+=("linux-x64")
-    archs+=("linux-arm")
-    archs+=("osx-x64")
-    archs+=("osx-arm64")
+    dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
 
-    for arch in "${archs[@]}"
-    do
-	  dotnet publish src/2fa -c Release -r $arch --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$arch
-	  
-      #if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
-	  #
-      #local publish_path="src/2fa/publish/$arch"
-      #local assembly_name="Comets.exe"
-      #local release_path="release"
-	  #
-      #mkdir -p $release_path
-      #cp $publish_path/$assembly_name $release_path
-	  #
-      #tar -C "$release_path/" -a -c -f $release_path/comets-$VERSION.zip --exclude=*.zip "*"
-	  #
-      #local sha256=$(sha256sum.exe "$release_path/$assembly_name" | cut -d " " -f 1)
-      #local url="https://github.com/jurakovic/Comets/releases/tag/v$VERSION"
-      #echo "$sha256  $assembly_name" > $release_path/checksum.txt
-    done
+    if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
 
     echo
-    echo -e "${Color_Green}Release OK${Color_Off}"
+    echo -e "${Color_Green}Build OK${Color_Off}"
+
+    #local publish_path="publish/$ARCH"
+    #local assembly_name=""
+    #
+    #case "$ARCH" in
+    #  win*) assembly_name="2fa.exe" ;;
+    #  *)    assembly_name="2fa" ;;
+    #esac
+    #
+    #local release_path="release"
+    #
+    #mkdir -p $release_path
+    #cp $publish_path/$assembly_name $release_path
+    #
+    #tar -C "$release_path/" -a -c -f $release_path/2fa-$ARCH-$VERSION.zip $assembly_name
+    #
+    #local sha256=$(sha256sum.exe "$release_path/$assembly_name" | cut -d " " -f 1)
+    #local url="https://github.com/jurakovic/Comets/releases/tag/v$VERSION"
+    #echo "$sha256  $assembly_name" > $release_path/checksum.txt
+    #
+    #echo
+    #echo -e "${Color_Green}Release OK${Color_Off}"
 
     #read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
     #if [ ! $yn = "y" ]; then exit; fi
-    #
+	#
     #git checkout release && git pull || git switch -c release origin/release
-    #
+	#
     #echo "VERSION:   $VERSION"    > version
     #echo "BUMP_TYPE: $BUMP_TYPE" >> version
     #echo "PREVIEW:   $PREVIEW"   >> version
@@ -67,15 +69,15 @@ function main() {
     #echo "COMMIT:    $COMMIT"    >> version
     #echo "SHA256:    $sha256"    >> version
     #echo "URL:       $url"       >> version
-    #
+	#
     #git add version
     #git commit -m "v$VERSION ($BRANCH)"
     #git push
-    #
+	#
     #git checkout "$BRANCH"
     #git tag "v$VERSION"
     #git push origin "v$VERSION"
-    #
+
     #echo
     #echo -e "${Color_Yellow}Version $VERSION released${Color_Off}"
     #echo -e "${Color_Green}All done${Color_Off}"
@@ -111,6 +113,15 @@ function read_args() {
                   exit 1
               fi
               ;;
+            "-a" | "--arch")
+              shift
+              if is_in_array "$1" "${_arch_values[@]}"; then
+                  ARCH="$1"
+              else
+                  invalid_argument "$1" "${_arch_values[*]}"
+                  exit 1
+              fi
+              ;;
         esac
         shift
     done
@@ -139,6 +150,7 @@ function read_args() {
     echo "VERSION:   $VERSION"
     echo "BUMP_TYPE: $BUMP_TYPE"
     echo "PREVIEW:   $PREVIEW"
+    echo "ARCH:      $ARCH"
     echo "BRANCH:    $BRANCH"
     echo "COMMIT:    $COMMIT"
     echo "MESSAGE:   $MESSAGE"
@@ -149,6 +161,7 @@ function help() {
     echo "  -v, --version <VERSION>        auto*, x.y.z"
     echo "  -b, --bump_type <BUMP_TYPE>    major, minor, patch*"
     echo "  -p, --preview <PREVIEW>        auto*, true, false"
+    echo "  -a, --arch <ARCH>              x64*, x86"
     echo "  -h, --help"
     echo "                                 * Default value"
     echo ""
