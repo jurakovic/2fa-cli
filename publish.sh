@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Default values
+SUBCOMMAND="publish"
 BRANCH=""
 COMMIT=""
 MESSAGE=""
@@ -10,6 +11,7 @@ PREVIEW="auto"
 ARCH="win-x64"
 
 # Allowed values
+_subcommand_values=("publish" "package" "release")
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
 _arch_values=("win-x64" "win-x86" "linux-x64" "linux-arm")
@@ -18,8 +20,6 @@ _arch_values=("win-x64" "win-x86" "linux-x64" "linux-arm")
 Color_Off='\033[0m'
 Color_Green='\033[0;32m'
 Color_Yellow='\033[0;33m'
-
-# add 3 steps: publish, pack (zip), release (commit)
 
 function main() {
     read_args "$@"
@@ -131,6 +131,14 @@ function read_args() {
                   exit 1
               fi
               ;;
+            *)
+              if is_in_array "$1" "${_subcommand_values[@]}"; then
+                  SUBCOMMAND="$1"
+              else
+                  invalid_argument "$1" "${_subcommand_values[*]}"
+                  exit 1
+              fi
+              ;;
         esac
         shift
     done
@@ -148,36 +156,45 @@ function read_args() {
     fi
 
     if [ "$VERSION" = "auto" ]; then
-        local previous=$(git show origin/release:version | head -n 1 | sed 's/VERSION:   //')
-        echo "PREV_VER:  $previous"
+        local previous=$(git show origin/release:version >/dev/null 2>&1 || echo '0.0.0' | head -n 1 | sed 's/VERSION:   //')
+        echo "PREV_VER:   $previous"
         VERSION=$(bump_version "$previous" "$BUMP_TYPE" "$PREVIEW")
     else
         BUMP_TYPE=""
         PREVIEW=""
     fi
 
-    echo "VERSION:   $VERSION"
-    echo "BUMP_TYPE: $BUMP_TYPE"
-    echo "PREVIEW:   $PREVIEW"
-    echo "ARCH:      $ARCH"
-    echo "BRANCH:    $BRANCH"
-    echo "COMMIT:    $COMMIT"
-    echo "MESSAGE:   $MESSAGE"
+    echo "SUBCOMMAND: $SUBCOMMAND"
+    echo "VERSION:    $VERSION"
+    echo "BUMP_TYPE:  $BUMP_TYPE"
+    echo "PREVIEW:    $PREVIEW"
+    echo "ARCH:       $ARCH"
+    echo "BRANCH:     $BRANCH"
+    echo "COMMIT:     $COMMIT"
+    echo "MESSAGE:    $MESSAGE"
 }
 
 function help() {
+    echo "Usage:"
+    echo "  ./publish.sh <subcommand> [options]"
+    echo ""
+    echo "Subcommands:"
+    echo "  publish                        Step 1: run dotnet publish"
+    echo "  package                        Step 2: archive executable to zip or tarball"
+    echo "  release                        Step 3: execute git commit, tag, push..."
+    echo ""
     echo "Options:                         Allowed values:"
     echo "  -v, --version <VERSION>        auto*, x.y.z"
     echo "  -b, --bump_type <BUMP_TYPE>    major, minor, patch*"
     echo "  -p, --preview <PREVIEW>        auto*, true, false"
-    echo "  -a, --arch <ARCH>              x64*, x86"
+    echo "  -a, --arch <ARCH>              win-x64*, linux-x64"
     echo "  -h, --help"
     echo "                                 * Default value"
     echo ""
-    echo "Example usage:"
-    echo "  ./publish.sh"
-    echo "  ./publish.sh -v 1.2.3"
-    echo "  ./publish.sh -b major -p true"
+    echo "Examples:"
+    echo "  ./publish.sh publish"
+    echo "  ./publish.sh publish -v 1.2.3"
+    echo "  ./publish.sh publish -b major -p true"
 }
 
 function is_in_array() {
@@ -194,6 +211,8 @@ function is_in_array() {
 function invalid_argument() {
     echo "Error. Invalid argument value: $1"
     echo "Allowed values: ${*:2}"
+    echo
+    help
 }
 
 function bump_version() {
