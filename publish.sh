@@ -35,72 +35,69 @@ function main() {
 }
 
 function publish() {
-    echo "publish"
-    #dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
-    #
-    #if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
-    #
-    #echo
-    #echo -e "${Color_Green}Build OK${Color_Off}"
+    dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
+
+    if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
+
+    echo
+    echo -e "${Color_Green}Publish OK${Color_Off}"
 }
 
 function package() {
-    echo "package"
-    #local publish_path="publish/$ARCH"
-    #local assembly_name="2fa"
-    #local assembly_ext=""
-    #local archive_ext=".zip"
-    #
-    #case "$ARCH" in
-    #  win*) assembly_ext=".exe" ;;
-    #  *) archive_ext=".tar.gz" ;;
-    #esac
-    #
-    #local release_path="release/$ARCH"
-    #local archive_name="${assembly_name}_${VERSION}_${ARCH}${archive_ext}"
-    #local archive_path="$release_path/../$archive_name"
-    #local assembly_full="${assembly_name}${assembly_ext}"
-    #
-    #mkdir -p $release_path
-    #cp $publish_path/$assembly_name$assembly_ext $release_path
-    #
-    #tar -C "$release_path/" -a -c -f "$archive_path" "$assembly_full"
-    #
-    #local sha256=$(sha256sum$assembly_ext "$archive_path" | cut -d " " -f 1)
-    #local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
-    #echo "$sha256  $archive_name" >> $release_path/../checksums.txt
-    #
-    #echo
-    #echo -e "${Color_Green}Package OK${Color_Off}"
+    local publish_path="publish/$ARCH"
+    local assembly_name="2fa"
+    local assembly_ext=""
+    local archive_ext=".zip"
+
+    case "$ARCH" in
+      win*) assembly_ext=".exe" ;;
+      *) archive_ext=".tar.gz" ;;
+    esac
+
+    local release_path="release/$ARCH"
+    local archive_name="${assembly_name}_${VERSION}_${ARCH}${archive_ext}"
+    local archive_path="$release_path/../$archive_name"
+    local assembly_full="${assembly_name}${assembly_ext}"
+
+    mkdir -p $release_path
+    cp $publish_path/$assembly_name$assembly_ext $release_path
+
+    tar -C "$release_path/" -a -c -f "$archive_path" "$assembly_full"
+
+    local sha256=$(sha256sum$assembly_ext "$archive_path" | cut -d " " -f 1)
+    local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
+    echo "$sha256  $archive_name" >> $release_path/../checksums.txt
+
+    echo
+    echo -e "${Color_Green}Package OK${Color_Off}"
 }
 
 function release() {
-    echo "release"
-    #read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
-    #if [ ! $yn = "y" ]; then exit; fi
-	#
-    #git checkout release && git pull || git switch -c release origin/release
-	#
-    #echo "VERSION:   $VERSION"    > version
-    #echo "BUMP_TYPE: $BUMP_TYPE" >> version
-    #echo "PREVIEW:   $PREVIEW"   >> version
-    #echo "ARCH:      $ARCH"      >> version
-    #echo "BRANCH:    $BRANCH"    >> version
-    #echo "COMMIT:    $COMMIT"    >> version
-    #echo "SHA256:    $sha256"    >> version
-    #echo "URL:       $url"       >> version
-	#
-    #git add version
-    #git commit -m "v$VERSION ($BRANCH)"
-    #git push
-	#
-    #git checkout "$BRANCH"
-    #git tag "v$VERSION"
-    #git push origin "v$VERSION"
+    read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
+    if [ ! $yn = "y" ]; then exit; fi
 
-    #echo
-    #echo -e "${Color_Yellow}Version $VERSION released${Color_Off}"
-    #echo -e "${Color_Green}All done${Color_Off}"
+    git checkout release && git pull || git switch -c release origin/release
+
+    echo "VERSION:   $VERSION"    > version
+    echo "BUMP_TYPE: $BUMP_TYPE" >> version
+    echo "PREVIEW:   $PREVIEW"   >> version
+    echo "ARCH:      $ARCH"      >> version
+    echo "BRANCH:    $BRANCH"    >> version
+    echo "COMMIT:    $COMMIT"    >> version
+    echo "SHA256:    $sha256"    >> version
+    echo "URL:       $url"       >> version
+
+    git add version
+    git commit -m "v$VERSION ($BRANCH)"
+    git push
+
+    git checkout "$BRANCH"
+    git tag "v$VERSION"
+    git push origin "v$VERSION"
+
+    echo
+    echo -e "${Color_Yellow}Version $VERSION released${Color_Off}"
+    echo -e "${Color_Green}All done${Color_Off}"
 }
 
 function read_args() {
