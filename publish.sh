@@ -19,7 +19,7 @@ Color_Off='\033[0m'
 Color_Green='\033[0;32m'
 Color_Yellow='\033[0;33m'
 
-# add 3 steps: build, publish (zip), finalize (commit)
+# add 3 steps: publish, pack (zip), release (commit)
 
 function main() {
     read_args "$@"
@@ -27,34 +27,43 @@ function main() {
     read -p "Press any key to continue..." -n1 -s; echo
     echo
 
-    dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
-
-    if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
-
-    echo
-    echo -e "${Color_Green}Build OK${Color_Off}"
-
-    #local publish_path="publish/$ARCH"
-    #local assembly_name=""
+    #=== publish
+    #dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
     #
-    #case "$ARCH" in
-    #  win*) assembly_name="2fa.exe" ;;
-    #  *)    assembly_name="2fa" ;;
-    #esac
-    #
-    #local release_path="release"
-    #
-    #mkdir -p $release_path
-    #cp $publish_path/$assembly_name $release_path
-    #
-    #tar -C "$release_path/" -a -c -f $release_path/2fa-$ARCH-$VERSION.zip $assembly_name
-    #
-    #local sha256=$(sha256sum.exe "$release_path/$assembly_name" | cut -d " " -f 1)
-    #local url="https://github.com/jurakovic/Comets/releases/tag/v$VERSION"
-    #echo "$sha256  $assembly_name" > $release_path/checksum.txt
+    #if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
     #
     #echo
-    #echo -e "${Color_Green}Release OK${Color_Off}"
+    #echo -e "${Color_Green}Build OK${Color_Off}"
+    #===
+
+    #===pack
+    local publish_path="publish/$ARCH"
+    local assembly_name="2fa"
+    local assembly_ext=""
+    local archive_ext=".zip"
+
+    case "$ARCH" in
+      win*) assembly_ext=".exe" ;;
+      *) archive_ext=".tar.gz" ;;
+    esac
+
+    local release_path="release/$ARCH"
+    local archive_name="${assembly_name}_${VERSION}_${ARCH}${archive_ext}"
+    local archive_path="$release_path/../$archive_name"
+    local assembly_full="${assembly_name}${assembly_ext}"
+
+    mkdir -p $release_path
+    cp $publish_path/$assembly_name$assembly_ext $release_path
+
+    tar -C "$release_path/" -a -c -f "$archive_path" "$assembly_full"
+
+    local sha256=$(sha256sum$assembly_ext "$archive_path" | cut -d " " -f 1)
+    local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
+    echo "$sha256  $archive_name" >> $release_path/../checksums.txt
+
+    echo
+    echo -e "${Color_Green}Package OK${Color_Off}"
+    #===
 
     #read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
     #if [ ! $yn = "y" ]; then exit; fi
