@@ -9,12 +9,14 @@ VERSION="auto"
 BUMP_TYPE="patch"
 PREVIEW="auto"
 ARCH="win-x64"
+UNATTENDED="false"
 
 # Allowed values
 _subcommand_values=("publish" "package" "release")
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
 _arch_values=("win-x64" "linux-x64")
+_unattended_values=("true" "false")
 
 # Colors
 Color_Off='\033[0m'
@@ -70,8 +72,11 @@ function package() {
 }
 
 function release() {
-    read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
-    if [ ! $yn = "y" ]; then exit; fi
+    if [ ! $UNATTENDED = "true" ]
+    then
+      read -p "Do you want to continue to git commit, tag, push...? (y/n) " yn
+      if [ ! $yn = "y" ]; then exit; fi
+    fi
 
     git checkout release && git pull || git switch -c release origin/release
 
@@ -136,6 +141,15 @@ function read_args() {
                   exit 1
               fi
               ;;
+            "-u" | "--unattended")
+              shift
+              if is_in_array "$1" "${_unattended_values[@]}"; then
+                  UNATTENDED="$1"
+              else
+                  invalid_argument "$1" "${_unattended_values[*]}"
+                  exit 1
+              fi
+              ;;
             *)
               if is_in_array "$1" "${_subcommand_values[@]}"; then
                   SUBCOMMAND="$1"
@@ -178,7 +192,12 @@ function read_args() {
     echo "COMMIT:     $COMMIT"
     echo "MESSAGE:    $MESSAGE"
 
-    read -p "Press any key to continue..." -n1 -s; echo
+    if [ $UNATTENDED = "true" ]
+    then
+      for i in {3..0..1}; do echo -en "\rContinue in $i" && if [ "$i" -gt "0" ]; then sleep 1; fi; done
+    else
+      read -p "Press any key to continue..." -n1 -s; echo
+    fi
     echo
 }
 
@@ -196,6 +215,7 @@ function help() {
     echo "  -b, --bump_type <BUMP_TYPE>    major, minor, patch*"
     echo "  -p, --preview <PREVIEW>        auto*, true, false"
     echo "  -a, --arch <ARCH>              win-x64*, linux-x64"
+    echo "  -u, --unattended <UNATTENDED>  true, false*"
     echo "  -h, --help"
     echo "                                 * Default value"
     echo ""
