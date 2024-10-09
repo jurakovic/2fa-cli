@@ -9,7 +9,7 @@ namespace _2fa
 	internal class ListCommand : Command
 	{
 		public ListCommand()
-			: base("list", "Lists all stored 2FA entries")
+			: base("list", "Lists all 2FA entries")
 		{
 			this.SetHandler(ExecuteAsync);
 		}

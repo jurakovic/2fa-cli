@@ -4,8 +4,9 @@
       "commandName": "Project",
       "commandLineArgs2": "add gh nzxxiidbebvwk6jb",
       "commandLineArgs1": "add ghh nzxxiidbebvwk6jb -t hotp",
-      "commandLineArgs": "get gh",
-      "commandLineArgs3": "rm gh"
+      "commandLineArgs4": "get gh",
+      "commandLineArgs3": "rm gh",
+      "commandLineArgs": "-h"
     }
   }
 }

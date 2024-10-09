@@ -11,7 +11,7 @@ namespace _2fa
 	internal class GetCommand : Command
 	{
 		public GetCommand()
-			: base("get", "Retrieves the current OTP code for a specified 2FA entry")
+			: base("get", "Retrieves the current OTP code for a specified service")
 		{
 			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
