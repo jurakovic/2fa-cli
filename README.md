@@ -83,3 +83,7 @@ bin/Release/net8.0/linux-x64/publish/2fa -h
 | bcrypt.net | [BcryptNet/bcrypt.net](https://github.com/BcryptNet/bcrypt.net) | [BCrypt.Net-Next](https://www.nuget.org/packages/BCrypt.Net-Next) |
 | Otp.NET | [kspearrin/Otp.NET](https://github.com/kspearrin/Otp.NET) | [Otp.NET](https://www.nuget.org/packages/Otp.NET) |
 | TextCopy | [CopyText/TextCopy](https://github.com/CopyText/TextCopy) | [TextCopy](https://www.nuget.org/packages/TextCopy) |
+
+### Disclaimer
+
+This tool is intended for educational and personal use only. While every effort has been made to ensure the security and integrity of stored 2FA secrets, it is not recommended for use in high-security environments or as a replacement for professional-grade security solutions. Use this tool at your own risk. The author is not responsible for any data loss, security breaches, or other issues that may arise from the use of this software.
