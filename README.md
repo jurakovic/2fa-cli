@@ -8,10 +8,10 @@
 
 | Title | GitHub | NuGet |
 |--|--|--|
-| System.CommandLine | <https://github.com/dotnet/command-line-api> | <https://www.nuget.org/packages/System.CommandLine> |
-| bcrypt.net | <https://github.com/BcryptNet/bcrypt.net> | <https://www.nuget.org/packages/BCrypt.Net-Next> |
-| Otp.NET | <https://github.com/kspearrin/Otp.NET> | <https://www.nuget.org/packages/Otp.NET> |
-| TextCopy | <https://github.com/CopyText/TextCopy> | <https://www.nuget.org/packages/TextCopy> |
+| System.CommandLine | [dotnet/command-line-api](https://github.com/dotnet/command-line-api) | [System.CommandLine](https://www.nuget.org/packages/System.CommandLine) |
+| bcrypt.net | [BcryptNet/bcrypt.net](https://github.com/BcryptNet/bcrypt.net) | [BCrypt.Net-Next](https://www.nuget.org/packages/BCrypt.Net-Next) |
+| Otp.NET | [kspearrin/Otp.NET](https://github.com/kspearrin/Otp.NET) | [Otp.NET](https://www.nuget.org/packages/Otp.NET) |
+| TextCopy | [CopyText/TextCopy](https://github.com/CopyText/TextCopy) | [TextCopy](https://www.nuget.org/packages/TextCopy) |
 
 ### Credits
 
