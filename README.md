@@ -3,8 +3,18 @@
 
 ### Download
 
-### Technologies
+[![GitHub Release](https://img.shields.io/github/v/release/jurakovic/2fa-cli)](https://github.com/jurakovic/2fa-cli/releases/latest)
 
+### Build From Source
+
+```
+cd src
+dotnet publish -c Release --self-contained
+bin/Release/net8.0/linux-x64/publish/2fa -h
+# and then mv to desired path
+```
+
+### Technologies
 
 | Title | GitHub | NuGet |
 |--|--|--|
@@ -13,11 +23,9 @@
 | Otp.NET | [kspearrin/Otp.NET](https://github.com/kspearrin/Otp.NET) | [Otp.NET](https://www.nuget.org/packages/Otp.NET) |
 | TextCopy | [CopyText/TextCopy](https://github.com/CopyText/TextCopy) | [TextCopy](https://www.nuget.org/packages/TextCopy) |
 
-### Credits
-
 ### Commands Overview
 
-```bash
+```text
 $ 2fa -h
 Description:
   2FA CLI tool
@@ -36,7 +44,7 @@ Commands:
   remove, rm <service>        Removes an existing 2FA entry
 ```
 
-```bash
+```text
 $ 2fa add -h
 Description:
   Adds a new 2FA entry
@@ -54,7 +62,7 @@ Options:
   -?, -h, --help          Show help and usage information
 ```
 
-```bash
+```text
 $ 2fa get -h
 Description:
   Retrieves the current OTP code for a specified service
@@ -70,7 +78,7 @@ Options:
   -?, -h, --help       Show help and usage information
 ```
 
-```bash
+```text
 $ 2fa list -h
 Description:
   Lists all 2FA entries
@@ -82,7 +90,7 @@ Options:
   -?, -h, --help  Show help and usage information
 ```
 
-```bash
+```text
 $ 2fa remove -h
 Description:
   Removes an existing 2FA entry
