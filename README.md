@@ -5,6 +5,14 @@
 
 ### Technologies
 
+
+| Title | GitHub | NuGet |
+|--|--|--|
+| System.CommandLine | <https://github.com/dotnet/command-line-api> | <https://www.nuget.org/packages/System.CommandLine> |
+| bcrypt.net | <https://github.com/BcryptNet/bcrypt.net> | <https://www.nuget.org/packages/BCrypt.Net-Next> |
+| Otp.NET | <https://github.com/kspearrin/Otp.NET> | <https://www.nuget.org/packages/Otp.NET> |
+| TextCopy | <https://github.com/CopyText/TextCopy> | <https://www.nuget.org/packages/TextCopy> |
+
 ### Credits
 
 ### Commands Overview
