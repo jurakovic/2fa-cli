@@ -6,6 +6,9 @@ Windows requires [Git Bash](https://gitforwindows.org), or more specifically [MS
 ```
 # Windows/Linux
 version="1.0.0"
+
+# Show help
+./publish.sh -h
 ```
 
 #### Step 1
@@ -30,5 +33,5 @@ version="1.0.0"
 
 ```bash
 # Windows
-./publish.sh release
+./publish.sh release -v $version
 ```

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default values
-SUBCOMMAND="publish"
+COMMAND="publish"
 BRANCH=""
 COMMIT=""
 MESSAGE=""
@@ -12,7 +12,7 @@ ARCH="win-x64"
 UNATTENDED="false"
 
 # Allowed values
-_subcommand_values=("publish" "package" "release")
+_command_values=("publish" "package" "release")
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
 _arch_values=("win-x64" "linux-x64")
@@ -26,7 +26,7 @@ Color_Yellow='\033[0;33m'
 function main() {
     read_args "$@"
 
-    case "$SUBCOMMAND" in
+    case "$COMMAND" in
       "publish") publish ;;
       "package") package ;;
       "release") release ;;
@@ -67,7 +67,6 @@ function package() {
     local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
     echo "$sha256  $archive_name" >> $release_path/../checksums.txt
 
-    echo
     echo -e "${Color_Green}Package OK${Color_Off}"
 }
 
@@ -97,7 +96,6 @@ function release() {
     git tag "v$VERSION"
     git push origin "v$VERSION"
 
-    echo
     echo -e "${Color_Yellow}Version $VERSION released${Color_Off}"
     echo -e "${Color_Green}All done${Color_Off}"
 }
@@ -151,10 +149,10 @@ function read_args() {
               fi
               ;;
             *)
-              if is_in_array "$1" "${_subcommand_values[@]}"; then
-                  SUBCOMMAND="$1"
+              if is_in_array "$1" "${_command_values[@]}"; then
+                  COMMAND="$1"
               else
-                  invalid_argument "$1" "${_subcommand_values[*]}"
+                  invalid_argument "$1" "${_command_values[*]}"
                   exit 1
               fi
               ;;
@@ -183,18 +181,19 @@ function read_args() {
         PREVIEW=""
     fi
 
-    echo "SUBCOMMAND: $SUBCOMMAND"
-    echo "VERSION:    $VERSION"
-    echo "BUMP_TYPE:  $BUMP_TYPE"
-    echo "PREVIEW:    $PREVIEW"
-    echo "ARCH:       $ARCH"
-    echo "BRANCH:     $BRANCH"
-    echo "COMMIT:     $COMMIT"
-    echo "MESSAGE:    $MESSAGE"
+    echo "COMMAND:   $COMMAND"
+    echo "VERSION:   $VERSION"
+    echo "BUMP_TYPE: $BUMP_TYPE"
+    echo "PREVIEW:   $PREVIEW"
+    echo "ARCH:      $ARCH"
+    echo "BRANCH:    $BRANCH"
+    echo "COMMIT:    $COMMIT"
+    echo "MESSAGE:   $MESSAGE"
 
     if [ $UNATTENDED = "true" ]
     then
       for i in {3..0..1}; do echo -en "\rContinue in $i" && if [ "$i" -gt "0" ]; then sleep 1; fi; done
+      echo -en "\r             "
     else
       read -p "Press any key to continue..." -n1 -s; echo
     fi
@@ -203,9 +202,9 @@ function read_args() {
 
 function help() {
     echo "Usage:"
-    echo "  ./publish.sh <subcommand> [options]"
+    echo "  ./publish.sh <command> [options]"
     echo ""
-    echo "Subcommands:"
+    echo "Commands:"
     echo "  publish                        Step 1: run dotnet publish"
     echo "  package                        Step 2: archive executable to zip or tarball"
     echo "  release                        Step 3: execute git commit, tag, push..."
