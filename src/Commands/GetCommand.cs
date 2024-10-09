@@ -15,15 +15,15 @@ namespace _2fa
 		{
 			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
-			var noClipboardOption = new Option<bool>("--no-clipboard", () => false, "Disable copying to clipboard");
-			noClipboardOption.AddAlias("-nc");
+			var clipboardOption = new Option<bool>("--clip", () => false, "Copy to clipboard");
+			clipboardOption.AddAlias("-c");
 
 			this.Add(serviceArgument);
-			this.Add(noClipboardOption);
-			this.SetHandler(ExecuteAsync, serviceArgument, noClipboardOption);
+			this.Add(clipboardOption);
+			this.SetHandler(ExecuteAsync, serviceArgument, clipboardOption);
 		}
 
-		private Task ExecuteAsync(string service, bool noClipboard)
+		private Task ExecuteAsync(string service, bool clipboard)
 		{
 			if (!File.Exists(ConfigHelper.FilePath))
 			{
@@ -66,7 +66,7 @@ namespace _2fa
 
 						Console.WriteLine(otp);
 
-						if (!noClipboard)
+						if (clipboard)
 							ClipboardService.SetText(otp);
 					}
 					else
