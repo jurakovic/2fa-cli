@@ -1,5 +1,11 @@
 
-# 2FA CLI tool
+# 2FA CLI
+
+The **2FA CLI** is a simple command-line utility that allows users to securely add, retrieve, list, and remove 2FA secrets for various accounts directly from the terminal.
+
+Entries are stored in a `.2fa-cli.json` file located in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows.
+
+All secret keys are **encrypted** using a key derived from a password, which you set when adding your first entry. The password itself is securely hashed using **bcrypt**.
 
 ### Download
 
@@ -33,8 +39,6 @@ Adding a new entry:
 ```
 2fa add github nbswy3dpor3w6ztb
 ```
-
-On first `add`, tool asks for password which is used for secret key encryption.
 
 Getting the current OTP code for a specified entry:
 
