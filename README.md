@@ -42,14 +42,6 @@ Getting the current OTP code for a specified entry:
 2fa get github
 ```
 
-On each `get`, tool asks for password for secret key decryption.
-
-Password can also be set as `_2FA_CLI_PASSWORD` environment variable.
-
-```
-export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
-```
-
 Listing all entries:
 
 ```
@@ -60,6 +52,17 @@ Removing an existing entry:
 
 ```
 2fa rm github
+```
+
+##### Password
+
+Each time the `add` or `get` commands are used, the tool prompts for a password to encrypt or decrypt secret keys.
+
+For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` environment variable.
+
+```
+# Linux example
+export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 ```
 
 ### Download
