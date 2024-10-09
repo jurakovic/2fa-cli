@@ -3,7 +3,7 @@
 
 The **2FA CLI** is a simple command-line utility that allows users to securely add, retrieve, list, and remove 2FA secrets for various accounts directly from the terminal.
 
-Entries are stored in a `.2fa-cli.json` file located in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows.
+Entries are stored in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows in a `.2fa-cli.json` file.
 
 All secret keys are **encrypted** using a key derived from a password, which is set when adding first entry. The password itself is securely hashed using **bcrypt**.
 
@@ -62,12 +62,19 @@ Entry 'github' removed.
 
 Each time the `add` or `get` commands are used, the tool prompts for a password to encrypt or decrypt secret keys.
 
-For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` environment variable, but be aware of security implications.
+```
+$ 2fa get github
+Enter password:
+```
+
+For convenience, the password can also be provided using the `_2FA_CLI_PASSWORD` environment variable.
 
 ```bash
 # Linux example
 export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 ```
+
+> Be aware of security implications. Environment variables can be accessed by any process running under the same user account.
 
 #### .2fa-cli.json example
 
