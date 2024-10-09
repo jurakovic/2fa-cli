@@ -64,7 +64,7 @@ Each time the `add` or `get` commands are used, the tool prompts for a password 
 
 For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` environment variable, but be aware of security implications.
 
-```
+```bash
 # Linux example
 export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 ```
@@ -91,11 +91,20 @@ export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 
 ### Build from source
 
+1. Clone the repository
+
+```bash
+git clone https://github.com/jurakovic/2fa-cli.git
+cd 2fa-cli
 ```
+
+3. Build with `dotnet`
+
+```bash
 cd src
 dotnet publish -c Release --self-contained
 bin/Release/net8.0/linux-x64/publish/2fa -h
-# optionally, mv to desired path
+# mv to desired path
 ```
 
 ### Technologies
