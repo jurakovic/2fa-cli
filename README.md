@@ -33,25 +33,29 @@ Commands:
 Adding a new entry:
 
 ```
-2fa add github nbswy3dpor3w6ztb
+$ 2fa add github nbswy3dpor3w6ztb
+Entry 'github' added.
 ```
 
 Getting the current OTP code for a specified entry:
 
 ```
-2fa get github
+$ 2fa get github
+924313
 ```
 
 Listing all entries:
 
 ```
-2fa list
+$ 2fa list
+github
 ```
 
 Removing an existing entry:
 
 ```
-2fa rm github
+$ 2fa rm github
+Entry 'github' removed.
 ```
 
 #### Password
