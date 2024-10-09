@@ -54,7 +54,7 @@ Removing an existing entry:
 2fa rm github
 ```
 
-##### Password
+#### Password
 
 Each time the `add` or `get` commands are used, the tool prompts for a password to encrypt or decrypt secret keys.
 
@@ -75,7 +75,7 @@ export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 cd src
 dotnet publish -c Release --self-contained
 bin/Release/net8.0/linux-x64/publish/2fa -h
-# and then mv to desired path
+# optionally, mv to desired path
 ```
 
 ### Technologies
