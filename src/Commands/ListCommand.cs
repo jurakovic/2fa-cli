@@ -16,13 +16,13 @@ namespace _2fa
 
 		private Task ExecuteAsync()
 		{
-			if (!File.Exists(Config.FilePath))
+			if (!File.Exists(ConfigHelper.FilePath))
 			{
 				Console.WriteLine("No entries");
 			}
 			else
 			{
-				Config config = Config.Read();
+				Config config = ConfigHelper.Read();
 
 				foreach (Entry e in config.Entries.OrderBy(x => x.Service))
 					Console.WriteLine(e.Service);

@@ -20,13 +20,13 @@ namespace _2fa
 
 		private Task ExecuteAsync(string service)
 		{
-			if (!File.Exists(Config.FilePath))
+			if (!File.Exists(ConfigHelper.FilePath))
 			{
 				Console.WriteLine("No entries");
 			}
 			else
 			{
-				Config config = Config.Read();
+				Config config = ConfigHelper.Read();
 				Entry entry = config.Entries.SingleOrDefault(x => x.Service.ToUpper() == service.ToUpper());
 
 				if (entry == null)
@@ -36,7 +36,7 @@ namespace _2fa
 				else
 				{
 					config.Entries.Remove(entry);
-					config.Write();
+					ConfigHelper.Write(config);
 					Console.WriteLine($"Entry '{service}' removed.");
 				}
 			}

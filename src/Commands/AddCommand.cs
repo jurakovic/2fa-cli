@@ -42,7 +42,7 @@ namespace _2fa
 				return Task.FromResult(1);
 			}
 
-			if (!File.Exists(Config.FilePath))
+			if (!File.Exists(ConfigHelper.FilePath))
 			{
 				Console.Write("First entry. Enter new password: ");
 				password = ConsoleHelper.ReadPassword();
@@ -56,8 +56,8 @@ namespace _2fa
 				{
 					config = new Config();
 					config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-					config.Write();
-					Config.SetPermission();
+					ConfigHelper.Write(config);
+					ConfigHelper.SetPermission();
 				}
 				else
 				{
@@ -67,7 +67,7 @@ namespace _2fa
 			}
 			else
 			{
-				config = Config.Read();
+				config = ConfigHelper.Read();
 				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
 
 				if (String.IsNullOrWhiteSpace(password))
@@ -102,9 +102,9 @@ namespace _2fa
 				};
 
 				config.Entries.Add(entry);
+				ConfigHelper.Write(config);
 			}
 
-			config.Write();
 			Console.WriteLine($"Entry '{service}' added.");
 			return Task.CompletedTask;
 		}

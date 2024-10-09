@@ -25,7 +25,7 @@ namespace _2fa
 
 		private Task ExecuteAsync(string service, bool noClipboard)
 		{
-			if (!File.Exists(Config.FilePath))
+			if (!File.Exists(ConfigHelper.FilePath))
 			{
 				Console.WriteLine("No entries");
 			}
@@ -40,7 +40,7 @@ namespace _2fa
 					ConsoleHelper.ClearLine();
 				}
 
-				Config config = Config.Read();
+				Config config = ConfigHelper.Read();
 
 				if (BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{
@@ -61,7 +61,7 @@ namespace _2fa
 							var hotp = new Hotp(Base32Encoding.ToBytes(secretKey), hotpSize: entry.Digits);
 							otp = hotp.ComputeHOTP(entry.Counter);
 							entry.Counter++;
-							config.Write();
+							ConfigHelper.Write(config);
 						}
 
 						Console.WriteLine(otp);
