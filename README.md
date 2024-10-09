@@ -89,7 +89,7 @@ export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 
 [![GitHub Release](https://img.shields.io/github/v/release/jurakovic/2fa-cli)](https://github.com/jurakovic/2fa-cli/releases/latest)
 
-### Build From Source
+### Build from source
 
 ```
 cd src
