@@ -7,10 +7,6 @@ Entries are stored in a `.2fa-cli.json` file located in the `$HOME` directory on
 
 All secret keys are **encrypted** using a key derived from a password, which you set when adding your first entry. The password itself is securely hashed using **bcrypt**.
 
-### Download
-
-[![GitHub Release](https://img.shields.io/github/v/release/jurakovic/2fa-cli)](https://github.com/jurakovic/2fa-cli/releases/latest)
-
 ### Usage
 
 ```text
@@ -65,6 +61,10 @@ Removing an existing entry:
 ```
 2fa rm github
 ```
+
+### Download
+
+[![GitHub Release](https://img.shields.io/github/v/release/jurakovic/2fa-cli)](https://github.com/jurakovic/2fa-cli/releases/latest)
 
 ### Build From Source
 
