@@ -24,8 +24,15 @@ namespace _2fa
 			{
 				Config config = ConfigHelper.Read();
 
-				foreach (Entry e in config.Entries.OrderBy(x => x.Service))
-					Console.WriteLine(e.Service);
+				if (config.Entries.Any())
+				{
+					foreach (Entry e in config.Entries.OrderBy(x => x.Service))
+						Console.WriteLine(e.Service);
+				}
+				else
+				{
+					Console.WriteLine("No entries");
+				}
 			}
 
 			return Task.CompletedTask;
