@@ -9,7 +9,7 @@ namespace _2fa
 	internal class RemoveCommand : Command
 	{
 		public RemoveCommand()
-			: base("remove", "Removes an existing 2FA entry")
+			: base("remove", "Removes an existing entry")
 		{
 			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 

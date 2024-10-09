@@ -9,7 +9,7 @@ namespace _2fa
 	internal class AddCommand : Command
 	{
 		public AddCommand()
-			: base("add", "Adds a new 2FA entry")
+			: base("add", "Adds a new entry")
 		{
 			var serviceArgument = new Argument<string>("service", "The name of the organization or service provider");
 
