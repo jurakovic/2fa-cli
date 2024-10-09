@@ -16,7 +16,7 @@ namespace _2fa
 
 		private Task ExecuteAsync()
 		{
-			if (!File.Exists(Config.Path))
+			if (!File.Exists(Config.FilePath))
 			{
 				Console.WriteLine("No entries");
 			}

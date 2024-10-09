@@ -42,7 +42,7 @@ namespace _2fa
 				return Task.FromResult(1);
 			}
 
-			if (!File.Exists(Config.Path))
+			if (!File.Exists(Config.FilePath))
 			{
 				Console.Write("First entry. Enter new password: ");
 				password = ConsoleHelper.ReadPassword();
@@ -57,6 +57,7 @@ namespace _2fa
 					config = new Config();
 					config.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
 					config.Write();
+					Config.SetPermission();
 				}
 				else
 				{
