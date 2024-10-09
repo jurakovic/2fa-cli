@@ -91,21 +91,26 @@ export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 
 ### Build from source
 
+0. Prerequisites
+
+    * [.NET SDK](https://dotnet.microsoft.com/en-us/download)
+    * [Git](https://git-scm.com/)
+
 1. Clone the repository
 
-```bash
-git clone https://github.com/jurakovic/2fa-cli.git
-cd 2fa-cli
-```
+    ```bash
+    git clone https://github.com/jurakovic/2fa-cli.git
+    cd 2fa-cli
+    ```
 
-3. Build with `dotnet`
+3. Build (publish) with `dotnet`
 
-```bash
-cd src
-dotnet publish -c Release --self-contained
-bin/Release/net8.0/linux-x64/publish/2fa -h
-# mv to desired path
-```
+    ```bash
+    cd src
+    dotnet publish -c Release --self-contained
+    bin/Release/net8.0/linux-x64/publish/2fa -h
+    # mv to desired path
+    ```
 
 ### Technologies
 
