@@ -5,7 +5,7 @@ The **2FA CLI** is a simple command-line utility that allows users to securely a
 
 Entries are stored in a `.2fa-cli.json` file located in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows.
 
-All secret keys are **encrypted** using a key derived from a password, which you set when adding your first entry. The password itself is securely hashed using **bcrypt**.
+All secret keys are **encrypted** using a key derived from a password, which is set when adding first entry. The password itself is securely hashed using **bcrypt**.
 
 ### Usage
 
@@ -58,7 +58,7 @@ Removing an existing entry:
 
 Each time the `add` or `get` commands are used, the tool prompts for a password to encrypt or decrypt secret keys.
 
-For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` environment variable.
+For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` environment variable, but be aware of security implications.
 
 ```
 # Linux example
