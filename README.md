@@ -65,6 +65,22 @@ For convenience, the password can also be set using the `_2FA_CLI_PASSWORD` envi
 export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 ```
 
+#### .2fa-cli.json example
+
+```json
+{
+  "PasswordHash": "$2a$11$gVUQlYe2WldoCo93JxdLe.tQgN.eD1QYcbxB69skesa4QYZjEmEJK",
+  "Entries": [
+    {
+      "Service": "github",
+      "SecretKey": "DmVSS8L27lGQ7cWsrWzEzg==:2KXQIEWTbrONknsO2wWxUMXLx6MMY41sx2FAkiIJhR8=",
+      "Type": "totp",
+      "Digits": 6
+    }
+  ]
+}
+```
+
 ### Download
 
 [![GitHub Release](https://img.shields.io/github/v/release/jurakovic/2fa-cli)](https://github.com/jurakovic/2fa-cli/releases/latest)
