@@ -74,7 +74,7 @@ For convenience, the password can also be provided using the `_2FA_CLI_PASSWORD`
 export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 ```
 
-> Be aware of security implications. Environment variables can be accessed by any process running under the same user account.
+> **Warning**: Storing passwords in environment variables can pose a security risk as they may be accessible by other processes running on the same system. Use this method only in secure environments and avoid using it on shared or multi-user systems. Ensure that the environment variable is cleared or removed after use to minimize exposure.
 
 #### .2fa-cli.json example
 
