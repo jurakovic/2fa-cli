@@ -35,7 +35,7 @@ namespace _2fa
 			Config config;
 			string password;
 
-			secret = secret.PadRight(16, '=');
+			secret = secret.Replace(" ", "").PadRight(16, '=');
 			if (!EntryHelper.IsValidSecret(secret))
 			{
 				Console.WriteLine("Invalid secret");
