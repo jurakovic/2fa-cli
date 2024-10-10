@@ -34,9 +34,10 @@ function main() {
 }
 
 function publish() {
+    rm -rf src/bin/ src/obj/
     dotnet publish src -c Release -r $ARCH --self-contained -p:AssemblyVersion="$(echo $VERSION | sed 's/-preview//')" -p:Version="$VERSION" -o ./publish/$ARCH
 
-    if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build canceled
+    if [[ ! $? -eq 0 ]]; then exit 1; fi # exit if build failed or canceled
 
     echo
     echo -e "${Color_Green}Publish OK${Color_Off}"
