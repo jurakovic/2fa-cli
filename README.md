@@ -1,11 +1,11 @@
 
 # 2FA CLI
 
-The **2FA CLI** is a simple command-line utility that allows users to securely add 2FA secrets and get OTP codes for various accounts directly from the terminal.
-
-Entries are stored in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows in a `.2fa-cli.json` file.
+A simple command-line utility that allows users to securely add 2FA secrets and get OTP codes for various accounts directly from the terminal.
 
 All secret keys are **encrypted** using a key derived from a password, which is set when adding first entry. The password itself is securely hashed using **bcrypt**.
+
+Entries are stored in the `$HOME` directory on Linux and the `%USERPROFILE%` directory on Windows in a `.2fa-cli.json` file.
 
 ### Usage
 
@@ -98,12 +98,9 @@ export _2FA_CLI_PASSWORD='s0M35tr0NgP4$$W0rD'
 
 ### Build from source
 
-0. Prerequisites
+1. Make sure you have installed [Git](https://git-scm.com) and [.NET SDK](https://dotnet.microsoft.com/en-us/download)
 
-    * [.NET SDK](https://dotnet.microsoft.com/en-us/download)
-    * [Git](https://git-scm.com/)
-
-1. Clone the repository
+2. Clone the repository
 
     ```bash
     git clone https://github.com/jurakovic/2fa-cli.git
