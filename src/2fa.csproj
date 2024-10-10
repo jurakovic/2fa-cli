@@ -9,6 +9,7 @@
     <AssemblyName>2fa</AssemblyName>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishAot>true</PublishAot>
+    <NoWarn>IL3050,IL2026</NoWarn>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
