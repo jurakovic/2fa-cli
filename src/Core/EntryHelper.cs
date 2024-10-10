@@ -25,7 +25,7 @@ namespace _2fa
 			}
 		}
 
-		static bool IsValidBase32(string base32String)
+		private static bool IsValidBase32(string base32String)
 		{
 			try
 			{

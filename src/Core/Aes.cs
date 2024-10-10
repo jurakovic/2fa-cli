@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace _2fa
 {
-	public class Aes
+	internal static class Aes
 	{
 		public static string EncryptString(string password, string text)
 		{
