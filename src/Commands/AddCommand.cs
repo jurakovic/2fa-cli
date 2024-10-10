@@ -67,7 +67,6 @@ namespace _2fa
 			}
 			else
 			{
-				config = ConfigHelper.Read();
 				password = Environment.GetEnvironmentVariable("_2FA_CLI_PASSWORD");
 
 				if (String.IsNullOrWhiteSpace(password))
@@ -77,6 +76,7 @@ namespace _2fa
 					ConsoleHelper.ClearLine();
 				}
 
+				config = ConfigHelper.Read();
 				if (!BCrypt.Net.BCrypt.Verify(password, config.PasswordHash))
 				{
 					Console.WriteLine("Wrong password");

@@ -71,7 +71,7 @@ namespace _2fa
 					}
 					else
 					{
-						Console.WriteLine($"No '{service}' entry");
+						Console.WriteLine($"Entry '{service}' not found.");
 					}
 				}
 				else
