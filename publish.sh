@@ -65,7 +65,6 @@ function package() {
     tar -C "$release_path/" -a -c -f "$archive_path" "$assembly_full"
 
     local sha256=$(sha256sum$assembly_ext "$archive_path" | cut -d " " -f 1)
-    local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
     echo "$sha256  $archive_name" >> $release_path/../checksums.txt
 
     echo -e "${Color_Green}Package OK${Color_Off}"
@@ -80,13 +79,13 @@ function release() {
 
     git checkout release && git pull || git switch -c release origin/release
 
+    local url="https://github.com/jurakovic/2fa-cli/releases/tag/v$VERSION"
+
     echo "VERSION:   $VERSION"    > version
     echo "BUMP_TYPE: $BUMP_TYPE" >> version
     echo "PREVIEW:   $PREVIEW"   >> version
-    echo "ARCH:      $ARCH"      >> version
     echo "BRANCH:    $BRANCH"    >> version
     echo "COMMIT:    $COMMIT"    >> version
-    echo "SHA256:    $sha256"    >> version
     echo "URL:       $url"       >> version
 
     git add version
