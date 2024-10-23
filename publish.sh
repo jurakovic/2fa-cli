@@ -15,7 +15,7 @@ UNATTENDED="false"
 _command_values=("publish" "package" "release")
 _bump_type_values=("major" "minor" "patch")
 _preview_values=("auto" "true" "false")
-_arch_values=("win-x64" "linux-x64")
+_arch_values=("win-x64" "linux-x64" "osx-x64")
 _unattended_values=("true" "false")
 
 # Colors

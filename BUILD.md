@@ -19,6 +19,9 @@ version="1.0.0"
 
 # Linux
 ./publish.sh publish -v $version -a linux-x64
+
+# macOS
+./publish.sh publish -v $version -a osx-x64
 ```
 
 #### Step 2
@@ -27,6 +30,7 @@ version="1.0.0"
 # Windows
 ./publish.sh package -v $version -a win-x64 -u true
 ./publish.sh package -v $version -a linux-x64 -u true
+./publish.sh package -v $version -a osx-x64 -u true
 ```
 
 #### Step 3
